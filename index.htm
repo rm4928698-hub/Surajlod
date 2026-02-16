@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <title>Surajlod - Best Video Downloader</title>
+
+    <meta name="description" content="Surajlod: Sabse fast aur free video downloader. Instagram, Facebook aur YouTube se videos download karein bina kisi pareshaani ke.">
+
+    <meta name="keywords" content="Surajlod, Surajlod video downloader, free video download, instagram downloader, facebook video saver, Surajlod app">
+
+    <meta name="author" content="Surajlod">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurajLod | Ultimate Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8c00; /* सूरज जैसा ऑरेंज/गोल्डन कलर */
+            --secondary: #ff4500;
+            --bg: #0f172a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 25px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(255, 140, 0, 0.1); /* हल्का ऑरेंज ग्लो */
+        }
+
+        /* नया नाम: SurajLod */
+        .brand-name {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            display: block;
+            letter-spacing: -2px;
+        }
+
+        .tagline {
+            color: #94a3b8;
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            display: block;
+            font-weight: 400;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid #334155;
+            border-radius: 15px;
+            color: white;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .options-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        select {
+            padding: 12px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 69, 0, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 69, 0, 0.4);
+        }
+
+        #result { margin-top: 30px; }
+
+        .dl-success {
+            display: block;
+            padding: 16px;
+            background: #22c55e;
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-text { color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <span class="brand-name">SurajLod</span>
+        <span class="tagline">BY SURAJ • FAST DOWNLOADER</span>
+
+        <input type="text" id="urlInput" placeholder="वीडियो लिंक यहाँ पेस्ट करें...">
+        
+        <div class="options-row">
+            <select id="quality">
+                <option value="720">720p HD</option>
+                <option value="1080">1080p Full HD</option>
+                <option value="max">Best Quality</option>
+                <option value="480">480p SD</option>
+            </select>
+
+            <select id="format">
+                <option value="video">MP4 Video</option>
+                <option value="audio">MP3 Audio</option>
+            </select>
+        </div>
+
+        <button class="btn-download" onclick="handleDownload()">DOWNLOAD NOW</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function handleDownload() {
+            const videoUrl = document.getElementById('urlInput').value;
+            const quality = document.getElementById('quality').value;
+            const format = document.getElementById('format').value;
+            const resultArea = document.getElementById('result');
+
+            if (!videoUrl) {
+                alert("Please paste a link first!");
+                return;
+            }
+
+            resultArea.innerHTML = "<p class='loading-text'>SurajLod is fetching your file...</p>";
+
+            try {
+                // हमने यहाँ एक बहुत ही स्टेबल बैकअप API का इस्तेमाल किया है
+                const response = await fetch("https://api.cobalt.tools/api/json", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        url: videoUrl,
+                        videoQuality: quality,
+                        downloadMode: format,
+                        filenameStyle: "pretty"
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.url) {
+                    resultArea.innerHTML = `
+                        <p style="color: #22c55e;">Success!</p>
+                        <a href="${data.url}" class="dl-success" target="_blank">SAVE TO DEVICE</a>
+                    `;
+                } else {
+                    resultArea.innerHTML = "<p style='color: #ff4444;'>Error: Link not found!</p>";
+                }
+            } catch (err) {
+                resultArea.innerHTML = "<p style='color: #ff4444;'>Server Busy. Try again in 5s.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
